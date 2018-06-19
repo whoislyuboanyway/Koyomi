@@ -315,7 +315,7 @@ final public class Koyomi: UICollectionView {
     
     // MARK: - Public Methods -
     
-    public func display(in month: MonthType, andYear year: YearType) {
+    public func display(in month: MonthType?, andYear year: YearType?) {
         model.display(in: month, andYear: year)
         reloadData()
         calendarDelegate?.koyomi?(self, currentDateString: model.dateStringFromCurrentDate(withFormat: currentDateFormat))

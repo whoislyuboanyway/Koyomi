@@ -166,7 +166,7 @@ extension ViewController {
             default: return .next
             }
         }()
-        koyomi.display(in: month, andYear: .current)
+        koyomi.display(in: month, andYear: nil)
     }
     @IBAction func tappedYearControl(_ sender: UISegmentedControl) {
         let year: YearType = {
@@ -176,7 +176,7 @@ extension ViewController {
             default: return .next
             }
         }()
-        koyomi.display(in: .current, andYear: year)
+        koyomi.display(in: nil, andYear: year)
     }
     
     // Change koyomi style

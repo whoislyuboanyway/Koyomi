@@ -118,14 +118,17 @@ final class DateModel: NSObject {
         return false
     }
     
-    func display(in month: MonthType, andYear year: YearType) {
+    func display(in month: MonthType?, andYear year: YearType?) {
+        defer { setup() }
         currentDates = []
-        currentDate = (month == .current && year == .current) ? Date() : date(of: month, andYear: year)
-        print("currentDate = \(currentDate)")
-        setup()
+        guard month != .current && year != .current else {
+            currentDate = Date()
+            return
+        }
+        currentDate = date(of: month, andYear: year)
     }
     
-    func dateString(in month: MonthType, andYear year: YearType, withFormat format: String) -> String {
+    func dateString(in month: MonthType?, andYear year: YearType?, withFormat format: String) -> String {
         let formatter: DateFormatter = .init()
         formatter.dateFormat = format
         return formatter.string(from: date(of: month, andYear: year))
@@ -367,25 +370,28 @@ private extension DateModel {
         return calendar.date(from: components) ?? Date()
     }
     
-    func date(of month: MonthType, andYear year: YearType) -> Date {
+    func date(of month: MonthType?, andYear year: YearType?) -> Date {
         var components = DateComponents()
-        components.month = {
-            switch month {
-            case .previous: return -1
-            case .current:  return 0
-            case .next:     return 1
-            case .specific(let diff): return diff
-            }
-        }()
-        components.year = {
-            switch year {
-            case .previous: return -1
-            case .current:  return 0
-            case .next:     return 1
-            case .specific(let diff): return diff
-            }
-        }()
-
+        if let month = month {
+            components.month = {
+                switch month {
+                case .previous: return -1
+                case .current:  return 0
+                case .next:     return 1
+                case .specific(let diff): return diff
+                }
+            }()
+        }
+        if let year = year {
+            components.year = {
+                switch year {
+                case .previous: return -1
+                case .current:  return 0
+                case .next:     return 1
+                case .specific(let diff): return diff
+                }
+            }()
+        }
         return calendar.date(byAdding: components, to: currentDate) ?? Date()
     }
 }
