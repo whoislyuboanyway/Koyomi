@@ -11,11 +11,21 @@ import UIKit
 public enum MonthType: Equatable { case previous, current, next, specific(diff: Int) }
 public func ==(lhs: MonthType, rhs: MonthType) -> Bool {
     switch (lhs, rhs) {
-        case (.previous, .previous): return true
-        case (.next, .next): return true
-        case (.current, .current): return true
-        case (.specific(let leftFrom), .specific(let rightFrom)): return leftFrom == rightFrom
-        default: return false
+    case (.previous, .previous): return true
+    case (.next, .next): return true
+    case (.current, .current): return true
+    case (.specific(let leftFrom), .specific(let rightFrom)): return leftFrom == rightFrom
+    default: return false
+    }
+}
+
+public enum YearType: Equatable { case previous, current, next}
+public func ==(lhs: YearType, rhs: YearType) -> Bool {
+    switch (lhs, rhs) {
+    case (.previous, .previous): return true
+    case (.next, .next): return true
+    case (.current, .current): return true
+    default: return false
     }
 }
 
@@ -107,9 +117,9 @@ final class DateModel: NSObject {
         return false
     }
     
-    func display(in month: MonthType) {
+    func display(in month: MonthType, andYear year: YearType = .current) {
         currentDates = []
-        currentDate = month == .current ? Date() : date(of: month)
+        currentDate = month == .current ? Date() : date(of: month, andYear: year)
         setup()
     }
     
@@ -349,7 +359,7 @@ private extension DateModel {
         return calendar.date(from: components) ?? Date()
     }
     
-    func date(of month: MonthType) -> Date {
+    func date(of month: MonthType, andYear year: YearType = .current) -> Date {
         var components = DateComponents()
         components.month = {
             switch month {
@@ -357,6 +367,13 @@ private extension DateModel {
             case .current:  return 0
             case .next:     return 1
             case .specific(let diff): return diff
+            }
+        }()
+        components.year = {
+            switch year {
+            case .previous: return -1
+            case .current:  return 0
+            case .next:     return 1
             }
         }()
         return calendar.date(byAdding: components, to: currentDate) ?? Date()
