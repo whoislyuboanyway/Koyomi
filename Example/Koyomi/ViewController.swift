@@ -32,9 +32,16 @@ class ViewController: UIViewController {
     
     @IBOutlet fileprivate weak var segmentedControl: UISegmentedControl! {
         didSet {
-            segmentedControl.setTitle("Previous", forSegmentAt: 0)
-            segmentedControl.setTitle("Current", forSegmentAt: 1)
-            segmentedControl.setTitle("Next", forSegmentAt: 2)
+            segmentedControl.setTitle("-1 M", forSegmentAt: 0)
+            segmentedControl.setTitle("M", forSegmentAt: 1)
+            segmentedControl.setTitle("+1 M", forSegmentAt: 2)
+        }
+    }
+    @IBOutlet fileprivate weak var yearSegmentedControl: UISegmentedControl! {
+        didSet {
+            yearSegmentedControl.setTitle("-1 Y", forSegmentAt: 0)
+            yearSegmentedControl.setTitle("Y", forSegmentAt: 1)
+            yearSegmentedControl.setTitle("+1 Y", forSegmentAt: 2)
         }
     }
     
@@ -159,7 +166,17 @@ extension ViewController {
             default: return .next
             }
         }()
-        koyomi.display(in: month)
+        koyomi.display(in: month, andYear: .current)
+    }
+    @IBAction func tappedYearControl(_ sender: UISegmentedControl) {
+        let year: YearType = {
+            switch sender.selectedSegmentIndex {
+            case 0:  return .previous
+            case 1:  return .current
+            default: return .next
+            }
+        }()
+        koyomi.display(in: .current, andYear: year)
     }
     
     // Change koyomi style

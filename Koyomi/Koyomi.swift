@@ -315,10 +315,10 @@ final public class Koyomi: UICollectionView {
     
     // MARK: - Public Methods -
     
-    public func display(in month: MonthType, andYear year: YearType = .current) {
+    public func display(in month: MonthType, andYear year: YearType) {
         model.display(in: month, andYear: year)
         reloadData()
-        calendarDelegate?.koyomi?(self, currentDateString: model.dateString(in: .current, withFormat: currentDateFormat))
+        calendarDelegate?.koyomi?(self, currentDateString: model.dateStringFromCurrentDate(withFormat: currentDateFormat))
     }
     
     @discardableResult
@@ -334,7 +334,7 @@ final public class Koyomi: UICollectionView {
     }
     
     public func currentDateString(withFormat format: String = "M/yyyy") -> String {
-        return model.dateString(in: .current, withFormat: format)
+        return model.dateString(in: .current, andYear: .current, withFormat: format)
     }
     
     @discardableResult
@@ -344,8 +344,9 @@ final public class Koyomi: UICollectionView {
         let fromDate = date.formated() ?? date
         
         // Calculate the month difference between `now` and `from` and display the month of the selected date
-        let difference = fromDate.monthDifference(fromDate: now)
-        display(in: .specific(diff: difference))
+        let monthDifference = fromDate.monthDifference(fromDate: now)
+        let yearDifference = fromDate.yearDifference(fromDate: now)
+        display(in: .specific(diff: monthDifference), andYear: .specific(diff: yearDifference))
         
         model.select(from: fromDate, to: toDate)
         

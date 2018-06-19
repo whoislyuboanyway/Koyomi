@@ -35,6 +35,15 @@ extension Date {
         
         return endMonth - startMonth
     }
+    func yearDifference(fromDate date: Date) -> Int {
+        
+        let currentCalendar = Calendar.current
+        
+        guard let startYear = currentCalendar.ordinality(of: .year, in: .era, for: date) else { return 0 }
+        guard let endYear = currentCalendar.ordinality(of: .year, in: .era, for: self) else { return 0 }
+        
+        return endYear - startYear
+    }
     
     private func dateFromComponents(_ date: Date) -> Date? {
         let calender   = Calendar.current
