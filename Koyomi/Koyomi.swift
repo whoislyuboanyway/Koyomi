@@ -339,14 +339,12 @@ final public class Koyomi: UICollectionView {
     
     @discardableResult
     public func select(date: Date, to toDate: Date? = nil) -> Self {
-        // Format `now` and `from` date
-        let now = Date().formated() ?? Date()
+        // Format `from` date
         let fromDate = date.formated() ?? date
         
         // Calculate the month difference between `now` and `from` and display the month of the selected date
-        let monthDifference = fromDate.monthDifference(fromDate: now)
-        let yearDifference = fromDate.yearDifference(fromDate: now)
-        display(in: .specific(diff: monthDifference), andYear: .specific(diff: yearDifference))
+        let monthDifference = fromDate.monthDifference(fromDate: Date())
+        display(in: .specific(diff: monthDifference), andYear: nil)
         
         model.select(from: fromDate, to: toDate)
         
@@ -608,4 +606,3 @@ extension Koyomi: UICollectionViewDataSource {
         return cell
     }
 }
-
