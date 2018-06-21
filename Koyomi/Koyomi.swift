@@ -11,6 +11,13 @@ import UIKit
 // MARK: - KoyomiDelegate -
 @objc public protocol KoyomiDelegate: class {
     /**
+     Tells the delegate what is the current selectable
+     
+     - Parameter date:      The maximum date to show.
+     */
+    @objc optional func koyomi(currentShownDate date: Date)
+    
+    /**
      Tells the delegate that the date at the specified index path was selected.
      
      - Parameter koyomi:    The current Koyomi instance.
@@ -319,6 +326,7 @@ final public class Koyomi: UICollectionView {
         model.display(in: month, andYear: year)
         reloadData()
         calendarDelegate?.koyomi?(self, currentDateString: model.dateStringFromCurrentDate(withFormat: currentDateFormat))
+        calendarDelegate?.koyomi?(currentShownDate: model.dateObject(in: month, andYear: year))
     }
     
     @discardableResult

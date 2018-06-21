@@ -140,6 +140,10 @@ final class DateModel: NSObject {
         return formatter.string(from: currentDate)
     }
     
+    func dateObject(in month: MonthType?, andYear year: YearType?) -> Date {
+        return date(of: month, andYear: year)
+    }
+    
     func date(at indexPath: IndexPath) -> Date {
         return currentDates[indexPath.row]
     }
