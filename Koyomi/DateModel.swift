@@ -141,7 +141,7 @@ final class DateModel: NSObject {
     }
     
     func dateObject(in month: MonthType?, andYear year: YearType?) -> Date {
-        return date(of: month, andYear: year)
+        return currentDate
     }
     
     func date(at indexPath: IndexPath) -> Date {
